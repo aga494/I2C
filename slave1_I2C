@@ -1,0 +1,15 @@
+#include <Wire.h>
+void setup(){
+  Wire.begin(2);                // address I2C
+  Wire.onRequest(requestEvent); // Deklarasi event
+}
+void loop(){
+  delay(100);
+}
+void requestEvent(){
+  unsigned int dataADC = analogRead(A0);  //ambil data ADC 10 bit
+  unsigned char dataI2C[2];               //Deklarasi array
+  dataI2C[0] = lowByte(dataADC);          //memecah data integer menjadi 2 byte
+  dataI2C[1] = highByte(dataADC);
+  Wire.write(dataI2C,2);
+}
